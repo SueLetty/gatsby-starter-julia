@@ -4,6 +4,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import sanityClient from '@sanity/client';
 import BlockContent from '@sanity/block-content-to-react';
+import "./index.css"
 
 const client = sanityClient({
   projectId: 'tdhcph14',
@@ -29,7 +30,11 @@ const IndexPage = () => {
 
     useEffect(() => {
 
-    client.fetch("*[_type == 'post']").then(documents => setData(documents))
+    client.fetch("*[_type == 'post']").then(documents => {
+        console.log("sanity document: ", documents)
+        setData(documents)
+    }).catch(e => console.log("e: ",e))
+
 
     }, [])
 
@@ -39,7 +44,7 @@ const IndexPage = () => {
     <LandingBio />
     {data.map((item, index) => {
         return(
-            <div style={{backgroundColor: 'red'}}>
+            <div className="block">
                 <h1>{item.title}</h1>
                 <BlockContent blocks={item.body} />
             </div>
